@@ -1,7 +1,7 @@
 use crate::{chain_urls::get_chain_urls, error};
 use error::*;
 use rand::seq::SliceRandom;
-use std::str::FromStr;
+use std::{str::FromStr, vec};
 use thiserror::Error;
 use url::Url;
 use wasm_loader::NodeEndpoint;
@@ -80,8 +80,18 @@ impl FromStr for ChainInfo {
 	type Err = ChainInfoError;
 
 	/// Get a ChainInfo from a name or alias
-	fn from_str(name: &str) -> std::result::Result<Self, Self::Err> {
-		let name = name.to_lowercase();
+	fn from_str(input: &str) -> std::result::Result<Self, Self::Err> {
+		// Handle the case where the input is a ws* or http* url
+		if (input.starts_with("http") || input.starts_with("ws")) && input.contains("://") {
+			let name = input.to_string();
+			let url = Url::parse(input).expect("Failed parsing url");
+			let endpoint = NodeEndpoint::try_from(url).expect("Failed parsing url");
+
+			return Ok(Self { name, endpoints: vec![endpoint] });
+		}
+
+		// Handle the case where the input is a chain name or alias
+		let name = input.to_lowercase();
 		let endpoints = get_chain_urls(name.as_str())?;
 
 		if !endpoints.is_empty() {
