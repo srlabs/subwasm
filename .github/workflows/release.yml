@@ -35,7 +35,7 @@ jobs:
           cargo deb --profile production --strip -p subwasm -o "subwasm_linux_amd64.deb"
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: linux
           path: |
@@ -95,7 +95,7 @@ jobs:
           echo "SHA256=$SHA256" >> $GITHUB_ENV
 
       - name: Upload MacOS artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: macos
           path: |
