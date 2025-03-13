@@ -34,7 +34,7 @@ impl<S: AsRef<str>> From<S> for OutputFormat {
 
 pub struct MetadataWrapper<'a>(pub &'a RuntimeMetadataPrefixed);
 
-impl<'a> MetadataWrapper<'a> {
+impl MetadataWrapper<'_> {
 	/// Returns a ref to the inner `RuntimeMetadataPrefixed`
 	pub fn runtime_metadata_prefixed(&self) -> &RuntimeMetadataPrefixed {
 		self.0

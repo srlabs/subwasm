@@ -42,7 +42,7 @@ impl IpfsHasher {
 			written += pushed;
 		}
 
-		let (cid, _data) = adder.finish().last().ok_or_else(|| IpfsHasherError::HashError())?;
+		let (cid, _data) = adder.finish().last().ok_or(IpfsHasherError::HashError())?;
 
 		Ok(cid.to_string())
 	}

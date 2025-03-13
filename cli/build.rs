@@ -17,7 +17,7 @@ pub fn generate_cargo_key_build_date() {
 		.ok()
 		.and_then(|ts| ts.parse::<i64>().ok())
 		.and_then(|ts| DateTime::from_timestamp(ts, 0))
-		.unwrap_or_else(|| Utc::now());
+		.unwrap_or_else(Utc::now);
 
 	let formatted_build_date = build_date.format("%Y-%m-%dT%H:%M:%SZ").to_string();
 

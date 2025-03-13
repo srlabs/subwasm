@@ -61,6 +61,6 @@ pub fn get_chain_urls(name: &str) -> Result<Vec<NodeEndpoint>> {
 		"local" => Some(vec!["http://localhost:9933"]),
 		_ => None,
 	}
-	.map(|s| s.into_iter().flat_map(|s| NodeEndpoint::from_str(s)).collect())
+	.map(|s| s.into_iter().flat_map(NodeEndpoint::from_str).collect())
 	.ok_or_else(|| SubwasmLibError::EndpointNotFound(name.to_string()))
 }

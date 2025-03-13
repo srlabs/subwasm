@@ -35,7 +35,7 @@ pub fn ensure_local_wasm() -> String {
 #[allow(dead_code)]
 #[cfg(test)]
 pub fn temp_file() -> String {
-	let mut res = PathBuf::from(temp_dir());
+	let mut res = temp_dir();
 	res.push(PathBuf::from(uuid::Uuid::new_v4().to_string()));
 	String::from(res.to_str().expect("Failed generating temp file path"))
 }

@@ -21,7 +21,7 @@ mod test_reduced_conversion {
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
-				let rrtm = reduced_runtime::ReducedRuntime::from_v14(&v14).expect("Failed reducing runtime");
+				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).expect("Failed reducing runtime");
 				assert_eq!(rrtm.pallets.len(), 51);
 
 				let first_pallet = &rrtm.pallets[&0];
@@ -45,7 +45,7 @@ mod test_reduced_conversion {
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
-				let rrtm = reduced_runtime::ReducedRuntime::from_v14(&v14).expect("Failed reducing runtime");
+				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).expect("Failed reducing runtime");
 				assert_eq!(rrtm.pallets.len(), 51);
 
 				let first_pallet = &rrtm.pallets[&0];

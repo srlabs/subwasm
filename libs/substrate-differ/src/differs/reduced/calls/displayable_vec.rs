@@ -24,7 +24,7 @@ impl<'a, T: Default + PartialEq + Display + Clone + Copy + std::fmt::Debug> Disp
 	}
 
 	pub fn init(mut self) -> Self {
-		let first = self.reference.iter().next().map(|x| *x).unwrap_or_default();
+		let first = self.reference.iter().next().copied().unwrap_or_default();
 
 		self.all_same = if self.reference.iter().all(|&x| x == first) { Some(first) } else { None };
 		// println!("self = {self:#?}");
@@ -75,15 +75,12 @@ mod test_vec_display {
 
 	#[test]
 	fn test_vec_display() {
-		assert_eq!("[0]", DisplayableVec::new(&vec![0], None).init().to_short_string());
-		assert_eq!("[0; 4]", DisplayableVec::new(&vec![0, 0, 0, 0], None).init().to_short_string());
-		assert_eq!("[42; 4]", DisplayableVec::new(&vec![42, 42, 42, 42], Some(3)).init().to_short_string());
-		assert_eq!("[99; 4]", DisplayableVec::new(&vec![99, 99, 99, 99], None).init().to_short_string_with_max(3));
-		assert_eq!("[1, 2, 3, 4]", DisplayableVec::new(&vec![1, 2, 3, 4], None).init().to_short_string());
-		assert_eq!(
-			"[ 1, 2, 3, ... ]",
-			DisplayableVec::new(&vec![1, 2, 3, 4, 5], None).init().to_short_string_with_max(3)
-		);
+		assert_eq!("[0]", DisplayableVec::new(&[0], None).init().to_short_string());
+		assert_eq!("[0; 4]", DisplayableVec::new(&[0, 0, 0, 0], None).init().to_short_string());
+		assert_eq!("[42; 4]", DisplayableVec::new(&[42, 42, 42, 42], Some(3)).init().to_short_string());
+		assert_eq!("[99; 4]", DisplayableVec::new(&[99, 99, 99, 99], None).init().to_short_string_with_max(3));
+		assert_eq!("[1, 2, 3, 4]", DisplayableVec::new(&[1, 2, 3, 4], None).init().to_short_string());
+		assert_eq!("[ 1, 2, 3, ... ]", DisplayableVec::new(&[1, 2, 3, 4, 5], None).init().to_short_string_with_max(3));
 	}
 	#[test]
 	fn test_vec_display_2() {

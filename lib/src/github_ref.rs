@@ -14,7 +14,7 @@ pub struct GithubRef {
 
 impl Display for GithubRef {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		f.write_fmt(format_args!("{}@{}", self.runtime, self.version.to_string()))
+		f.write_fmt(format_args!("{}@{}", self.runtime, self.version))
 	}
 }
 
@@ -43,9 +43,9 @@ impl FromStr for GithubRef {
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		let mut parts = s.split('@');
 		if parts.clone().count() != 2 {
-			return Err(SubwasmLibError::Generic(
+			Err(SubwasmLibError::Generic(
 				"Unsupported Github version format, should be <runtime>@<version>".to_string(),
-			));
+			))
 		} else {
 			let runtime = parts.next().expect("We did not get the expected 2 parts").to_string();
 			let version = parts.next().expect("We did not get the expected 2 parts").to_string().replace("v", "");

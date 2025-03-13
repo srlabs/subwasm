@@ -212,12 +212,10 @@ fn main() -> color_eyre::Result<()> {
 
 			if show_opts.summary {
 				Ok(subwasm.display_reduced_summary(opts.json)?)
+			} else if let Some(pallet) = show_opts.pallet {
+				Ok(subwasm.display_reduced_pallet(&pallet, opts.json)?)
 			} else {
-				if let Some(pallet) = show_opts.pallet {
-					Ok(subwasm.display_reduced_pallet(&pallet, opts.json)?)
-				} else {
-					Ok(subwasm.display_reduced_runtime(opts.json)?)
-				}
+				Ok(subwasm.display_reduced_runtime(opts.json)?)
 			}
 		}
 	}

@@ -45,12 +45,9 @@ pub fn concatenate_arrays<T: Clone>(x: &[T], y: &[T]) -> Vec<T> {
 
 /// Generate our result object
 pub fn get_result(prefix: Prefix, buffer: &[u8]) -> Result<SrhResult> {
-	buffer.using_encoded(|wasm_blob: &[u8]| {
-		let result = match get_call_hash(prefix, wasm_blob) {
-			Ok(hash) => Ok(SrhResult { hash, encoded_hash: hex::encode(hash) }),
-			Err(_e) => Err(RuntimePropHashError::HashComputing()),
-		};
-		result
+	buffer.using_encoded(|wasm_blob: &[u8]| match get_call_hash(prefix, wasm_blob) {
+		Ok(hash) => Ok(SrhResult { hash, encoded_hash: hex::encode(hash) }),
+		Err(_e) => Err(RuntimePropHashError::HashComputing()),
 	})
 }
 
@@ -60,6 +57,7 @@ pub fn get_result(prefix: Prefix, buffer: &[u8]) -> Result<SrhResult> {
 /// * `wasm_blob` - The WASM blob
 /// # Returns
 /// * `CalllHash` - The hash of the proposal as calculated on chain
+///
 /// This function replaces the deprecated `get_proposal_hash`
 pub fn get_system_setcode(wasm_blob: &[u8]) -> Result<CalllHash> {
 	get_call_hash(PREFIX_SYSTEM_SETCODE, wasm_blob)

@@ -1,5 +1,3 @@
-#![cfg(test)]
-
 use std::{env, fmt::Display, path::PathBuf, str::FromStr};
 
 use crate::error::SubstrateDifferError;

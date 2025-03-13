@@ -53,11 +53,8 @@ impl TryFrom<&str> for Source {
 
 		// First we deal with the easy case of files
 		let src = WasmLoaderSource::from_str(s);
-		if let Ok(s) = &src {
-			match s {
-				WasmLoaderSource::File(f) => return Ok(Source::File(f.to_owned())),
-				_ => {}
-			}
+		if let Ok(WasmLoaderSource::File(f)) = &src {
+			return Ok(Source::File(f.to_owned()));
 		}
 
 		// This is where we try to be smart about URLs...
@@ -79,11 +76,8 @@ impl TryFrom<&str> for Source {
 			// if src.is_ok_and(|s| matches!(s, WasmLoaderSource::Chain(c))) {
 			// 	return Ok(Source::Chain(c));
 			// }
-			if let Ok(s) = &src {
-				match s {
-					WasmLoaderSource::Chain(c) => return Ok(Source::Chain(c.to_owned())),
-					_ => {}
-				}
+			if let Ok(WasmLoaderSource::Chain(c)) = &src {
+				return Ok(Source::Chain(c.to_owned()));
 			}
 		}
 

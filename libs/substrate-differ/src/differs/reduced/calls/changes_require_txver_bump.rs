@@ -8,14 +8,11 @@ impl RequireTransactionVersionBump for ReducedPalletChange {
 		let res = match self {
 			ReducedPalletChange::Index(_) => true,
 
-			ReducedPalletChange::Calls(x) => x
-				.iter()
-				.map(|i| match i {
-					MapChange::Added(_k, _d) => false,
-					MapChange::Removed(_k) => true,
-					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.require_tx_version_bump()).any(|x| x),
-				})
-				.any(|x| x),
+			ReducedPalletChange::Calls(x) => x.iter().any(|i| match i {
+				MapChange::Added(_k, _d) => false,
+				MapChange::Removed(_k) => true,
+				MapChange::Changed(_k, c) => c.iter().any(|cc| cc.require_tx_version_bump()),
+			}),
 
 			ReducedPalletChange::Name(_) => false,
 			ReducedPalletChange::Events(_x) => false,
@@ -74,7 +71,7 @@ impl RequireTransactionVersionBump for StorageChange {
 
 impl RequireTransactionVersionBump for SignatureChange {
 	fn require_tx_version_bump(&self) -> bool {
-		let res = self.args.iter().map(|arg_changes| arg_changes.require_tx_version_bump()).any(|x| x);
+		let res = self.args.iter().any(|arg_changes| arg_changes.require_tx_version_bump());
 		trace!("TxBump | SignatureChange: {res}");
 		res
 	}
@@ -96,7 +93,7 @@ impl RequireTransactionVersionBump for VecChange<ArgDesc, Vec<ArgChange>> {
 
 impl RequireTransactionVersionBump for Vec<ArgChange> {
 	fn require_tx_version_bump(&self) -> bool {
-		let res = self.iter().map(|c| c.require_tx_version_bump()).any(|x| x);
+		let res = self.iter().any(|c| c.require_tx_version_bump());
 		trace!("TxBump | Vec<ArgChange>: {res}");
 		res
 	}

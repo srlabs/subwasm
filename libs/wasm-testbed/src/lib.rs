@@ -313,8 +313,8 @@ mod tests {
 			assert!(runtime.is_supported());
 
 			let v = &runtime.core_version;
-			assert!(v.spec_name == String::from("kusama"));
-			assert!(v.impl_name == String::from("parity-kusama"));
+			assert!(v.spec_name == *"kusama");
+			assert!(v.impl_name == *"parity-kusama");
 			assert!(v.authoring_version == 2);
 			assert!(v.spec_version == 1062);
 			assert!(v.impl_version == 0);
@@ -341,8 +341,8 @@ mod tests {
 			assert!(runtime.is_supported());
 
 			let v = &runtime.core_version;
-			assert!(v.spec_name == String::from("kusama"));
-			assert!(v.impl_name == String::from("parity-kusama"));
+			assert!(v.spec_name == *"kusama");
+			assert!(v.impl_name == *"parity-kusama");
 			assert!(v.authoring_version == 2);
 			assert!(v.spec_version == 2030);
 			assert!(v.impl_version == 0);

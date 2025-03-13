@@ -9,14 +9,11 @@ impl Compatible for ReducedPalletChange {
 			ReducedPalletChange::Index(_) => false,
 			ReducedPalletChange::Name(_) => false,
 
-			ReducedPalletChange::Calls(x) => x
-				.iter()
-				.map(|i| match i {
-					MapChange::Added(_k, _d) => true,
-					MapChange::Removed(_k) => false,
-					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x),
-				})
-				.all(|x| x),
+			ReducedPalletChange::Calls(x) => x.iter().all(|i| match i {
+				MapChange::Added(_k, _d) => true,
+				MapChange::Removed(_k) => false,
+				MapChange::Changed(_k, c) => c.iter().all(|cc| cc.compatible()),
+			}),
 			ReducedPalletChange::Events(_x) => true,
 			ReducedPalletChange::Errors(_x) => true,
 
@@ -90,7 +87,7 @@ impl Compatible for StorageChange {
 
 impl Compatible for SignatureChange {
 	fn compatible(&self) -> bool {
-		let res = self.args.iter().map(|arg_changes| arg_changes.compatible()).all(|x| x);
+		let res = self.args.iter().all(|arg_changes| arg_changes.compatible());
 		trace!("Compat. | Signature: {res}");
 		res
 	}
@@ -110,7 +107,7 @@ impl Compatible for VecChange<ArgDesc, Vec<ArgChange>> {
 
 impl Compatible for Vec<ArgChange> {
 	fn compatible(&self) -> bool {
-		let res = self.iter().map(|c| c.compatible()).all(|x| x);
+		let res = self.iter().all(|c| c.compatible());
 		trace!("Compat. | Vec<ArgChange>: {res}");
 		res
 	}
