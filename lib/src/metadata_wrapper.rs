@@ -59,7 +59,7 @@ impl MetadataWrapper<'_> {
 
 			OutputFormat::Json if filter.is_none() => {
 				let serialized = serde_json::to_string_pretty(self.runtime_metadata())?;
-				let _ = print_big_output_safe(&serialized);
+				out.write_all(serialized.as_bytes())?;
 			}
 
 			OutputFormat::Scale if filter.is_none() => {
